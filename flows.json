@@ -1,1 +1,149 @@
-[]
+[
+    {
+        "id": "tab_lab_upse",
+        "type": "tab",
+        "label": "Lab UPSE - Sensor",
+        "info": "Laboratorio: simulacion de sensor de temperatura con alerta"
+    },
+    {
+        "id": "inj_lab_01",
+        "type": "inject",
+        "z": "tab_lab_upse",
+        "name": "Cada 5 segundos",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "fn_lab_01"
+            ]
+        ]
+    },
+    {
+        "id": "fn_lab_01",
+        "type": "function",
+        "z": "tab_lab_upse",
+        "name": "Simular temperatura",
+        "func": "const temp = +(20 + Math.random() * 20).toFixed(1);\nmsg.payload = {\n    sensor: \"DHT11-UPSE\",\n    temperatura: temp,\n    unidad: \"C\",\n    hora: new Date().toLocaleTimeString()\n};\nreturn msg;",
+        "outputs": 1,
+        "x": 360,
+        "y": 120,
+        "wires": [
+            [
+                "sw_lab_01",
+                "dbg_lab_all"
+            ]
+        ]
+    },
+    {
+        "id": "sw_lab_01",
+        "type": "switch",
+        "z": "tab_lab_upse",
+        "name": "Temp > 30 C?",
+        "property": "payload.temperatura",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "30",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 570,
+        "y": 120,
+        "wires": [
+            [
+                "chg_lab_alta"
+            ],
+            [
+                "chg_lab_normal"
+            ]
+        ]
+    },
+    {
+        "id": "chg_lab_alta",
+        "type": "change",
+        "z": "tab_lab_upse",
+        "name": "ALERTA",
+        "rules": [
+            {
+                "t": "set",
+                "p": "estado",
+                "pt": "msg",
+                "to": "ALERTA: temperatura alta",
+                "tot": "str"
+            }
+        ],
+        "x": 760,
+        "y": 80,
+        "wires": [
+            [
+                "dbg_lab_estado"
+            ]
+        ]
+    },
+    {
+        "id": "chg_lab_normal",
+        "type": "change",
+        "z": "tab_lab_upse",
+        "name": "Normal",
+        "rules": [
+            {
+                "t": "set",
+                "p": "estado",
+                "pt": "msg",
+                "to": "Temperatura normal",
+                "tot": "str"
+            }
+        ],
+        "x": 760,
+        "y": 160,
+        "wires": [
+            [
+                "dbg_lab_estado"
+            ]
+        ]
+    },
+    {
+        "id": "dbg_lab_all",
+        "type": "debug",
+        "z": "tab_lab_upse",
+        "name": "Lectura del sensor",
+        "active": true,
+        "tosidebar": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 580,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "dbg_lab_estado",
+        "type": "debug",
+        "z": "tab_lab_upse",
+        "name": "Estado",
+        "active": true,
+        "tosidebar": true,
+        "complete": "estado",
+        "targetType": "msg",
+        "x": 950,
+        "y": 120,
+        "wires": []
+    }
+]
