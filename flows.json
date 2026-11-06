@@ -163,7 +163,7 @@
         "type": "function",
         "z": "tab_dash_upse",
         "name": "Configuracion del flujo",
-        "func": "const VERSION = \"v3.0\";\nconst UMBRAL  = 25;   \n// ==============================================================\n\nflow.set(\"umbral\", UMBRAL);\nflow.set(\"version\", VERSION);\nmsg.payload = VERSION + \"  |  alerta si temperatura > \" + UMBRAL + \" °C\";\nreturn msg;",
+        "func": "const VERSION = \"v2.0\";\nconst UMBRAL  = 25;   \n// ==============================================================\n\nflow.set(\"umbral\", UMBRAL);\nflow.set(\"version\", VERSION);\nmsg.payload = VERSION + \"  |  alerta si temperatura > \" + UMBRAL + \" °C\";\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
