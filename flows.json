@@ -1,14 +1,447 @@
 [
     {
-        "id": "tab_lab_upse",
+        "id": "tab_dash_upse",
         "type": "tab",
-        "label": "Lab UPSE - Sensor",
-        "info": "Laboratorio: simulacion de sensor de temperatura con alerta"
+        "label": "Lab UPSE - Sensor + Dashboard",
+        "info": "Sensor de temperatura simulado con alerta, dashboard y panel de Git (push / pull)."
     },
     {
-        "id": "inj_lab_01",
+        "id": "uitab_dash_upse",
+        "type": "ui_tab",
+        "name": "Lab UPSE",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "uibase_dash_upse",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Dashboard Lab UPSE",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "grp_dash_sensor",
+        "type": "ui_group",
+        "name": "Sensor de temperatura",
+        "tab": "uitab_dash_upse",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "grp_dash_git",
+        "type": "ui_group",
+        "name": "Control de versiones (Git / GitHub)",
+        "tab": "uitab_dash_upse",
+        "order": 2,
+        "disp": true,
+        "width": "10",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "inj_dash_cfg",
         "type": "inject",
-        "z": "tab_lab_upse",
+        "z": "tab_dash_upse",
+        "name": "Al iniciar",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.5",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 90,
+        "wires": [
+            [
+                "fn_dash_cfg"
+            ]
+        ]
+    },
+    {
+        "id": "fn_dash_cfg",
+        "type": "function",
+        "z": "tab_dash_upse",
+        "name": "Configuracion del flujo",
+        "func": "const VERSION = \"v2.0\";\nconst UMBRAL  = 25;   \n// ==============================================================\n\nflow.set(\"umbral\", UMBRAL);\nflow.set(\"version\", VERSION);\nmsg.payload = VERSION + \"  |  alerta si temperatura > \" + UMBRAL + \" °C\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 90,
+        "wires": [
+            [
+                "txt_dash_version"
+            ]
+        ]
+    },
+    {
+        "id": "txt_dash_version",
+        "type": "ui_text",
+        "z": "tab_dash_upse",
+        "group": "grp_dash_git",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Version del flujo",
+        "label": "Version del flujo",
+        "format": "<b>{{msg.payload}}</b>",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 580,
+        "y": 90,
+        "wires": []
+    },
+    {
+        "id": "inj_dash_tick",
+        "type": "inject",
+        "z": "tab_dash_upse",
+        "name": "Cada 3 segundos",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 220,
+        "wires": [
+            [
+                "fn_dash_temp"
+            ]
+        ]
+    },
+    {
+        "id": "fn_dash_temp",
+        "type": "function",
+        "z": "tab_dash_upse",
+        "name": "Simular temperatura",
+        "func": "const temp = +(20 + Math.random() * 20).toFixed(1);\nmsg.lectura = {\n    sensor: \"DHT11-UPSE\",\n    temperatura: temp,\n    unidad: \"C\",\n    hora: new Date().toLocaleTimeString()\n};\nmsg.payload = temp;\nmsg.topic = \"Temperatura\";\nreturn msg;",
+        "outputs": 1,
+        "x": 360,
+        "y": 220,
+        "wires": [
+            [
+                "gauge_dash_temp",
+                "chart_dash_temp",
+                "sw_dash_umbral",
+                "dbg_dash_lectura"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_dash_temp",
+        "type": "ui_gauge",
+        "z": "tab_dash_upse",
+        "name": "Gauge temperatura",
+        "group": "grp_dash_sensor",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "25",
+        "seg2": "30",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "chart_dash_temp",
+        "type": "ui_chart",
+        "z": "tab_dash_upse",
+        "name": "Grafica temperatura",
+        "group": "grp_dash_sensor",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Historial (ultimos 5 min)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Esperando datos...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": "5",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 620,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "sw_dash_umbral",
+        "type": "switch",
+        "z": "tab_dash_upse",
+        "name": "Temp > umbral?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "umbral",
+                "vt": "flow"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 600,
+        "y": 280,
+        "wires": [
+            [
+                "chg_dash_alta"
+            ],
+            [
+                "chg_dash_normal"
+            ]
+        ]
+    },
+    {
+        "id": "chg_dash_alta",
+        "type": "change",
+        "z": "tab_dash_upse",
+        "name": "ALERTA",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "<span style=\"color:#d62728\">⚠ ALERTA: temperatura alta</span>",
+                "tot": "str"
+            }
+        ],
+        "x": 800,
+        "y": 260,
+        "wires": [
+            [
+                "txt_dash_estado",
+                "dbg_dash_estado"
+            ]
+        ]
+    },
+    {
+        "id": "chg_dash_normal",
+        "type": "change",
+        "z": "tab_dash_upse",
+        "name": "Normal",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "<span style=\"color:#2ca02c\">✔ Temperatura normal</span>",
+                "tot": "str"
+            }
+        ],
+        "x": 800,
+        "y": 300,
+        "wires": [
+            [
+                "txt_dash_estado",
+                "dbg_dash_estado"
+            ]
+        ]
+    },
+    {
+        "id": "txt_dash_estado",
+        "type": "ui_text",
+        "z": "tab_dash_upse",
+        "group": "grp_dash_sensor",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Estado",
+        "label": "Estado",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1020,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "dbg_dash_lectura",
+        "type": "debug",
+        "z": "tab_dash_upse",
+        "name": "Lectura del sensor",
+        "active": false,
+        "tosidebar": true,
+        "complete": "lectura",
+        "targetType": "msg",
+        "x": 630,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "dbg_dash_estado",
+        "type": "debug",
+        "z": "tab_dash_upse",
+        "name": "Estado",
+        "active": false,
+        "tosidebar": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 990,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "inj_dash_git",
+        "type": "inject",
+        "z": "tab_dash_upse",
         "name": "Cada 5 segundos",
         "props": [
             {
@@ -23,127 +456,157 @@
         "payload": "",
         "payloadType": "date",
         "x": 150,
-        "y": 120,
+        "y": 460,
         "wires": [
             [
-                "fn_lab_01"
+                "exec_dash_log",
+                "exec_dash_status"
             ]
         ]
     },
     {
-        "id": "fn_lab_01",
-        "type": "function",
-        "z": "tab_lab_upse",
-        "name": "Simular temperatura",
-        "func": "const temp = +(20 + Math.random() * 20).toFixed(1);\nmsg.payload = {\n    sensor: \"DHT11-UPSE\",\n    temperatura: temp,\n    unidad: \"C\",\n    hora: new Date().toLocaleTimeString()\n};\nreturn msg;",
-        "outputs": 1,
+        "id": "btn_dash_git",
+        "type": "ui_button",
+        "z": "tab_dash_upse",
+        "name": "Boton actualizar",
+        "group": "grp_dash_git",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Actualizar historial",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "refresh",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 150,
+        "y": 520,
+        "wires": [
+            [
+                "exec_dash_log",
+                "exec_dash_status"
+            ]
+        ]
+    },
+    {
+        "id": "exec_dash_log",
+        "type": "exec",
+        "z": "tab_dash_upse",
+        "command": "git -C \"C:/Users/ALEX CORDOVA/.node-red/projects/ProyectosGIT\" log -10 --pretty=format:%h~%an~%ar~%s",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "10",
+        "winHide": true,
+        "oldrc": false,
+        "name": "git log",
         "x": 360,
-        "y": 120,
+        "y": 460,
         "wires": [
             [
-                "sw_lab_01",
-                "dbg_lab_all"
-            ]
-        ]
-    },
-    {
-        "id": "sw_lab_01",
-        "type": "switch",
-        "z": "tab_lab_upse",
-        "name": "Temp > 30 C?",
-        "property": "payload.temperatura",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "gt",
-                "v": "30",
-                "vt": "num"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "outputs": 2,
-        "x": 570,
-        "y": 120,
-        "wires": [
-            [
-                "chg_lab_alta"
+                "fn_dash_log"
             ],
-            [
-                "chg_lab_normal"
-            ]
+            [],
+            []
         ]
     },
     {
-        "id": "chg_lab_alta",
-        "type": "change",
-        "z": "tab_lab_upse",
-        "name": "ALERTA",
-        "rules": [
-            {
-                "t": "set",
-                "p": "estado",
-                "pt": "msg",
-                "to": "ALERTA: temperatura alta",
-                "tot": "str"
-            }
-        ],
-        "x": 760,
-        "y": 80,
+        "id": "fn_dash_log",
+        "type": "function",
+        "z": "tab_dash_upse",
+        "name": "Convertir a tabla",
+        "func": "const lineas = String(msg.payload).trim().split(/\\r?\\n/).filter(l => l);\nmsg.payload = lineas.map(l => {\n    const [hash, autor, cuando, ...mensaje] = l.split(\"~\");\n    return { hash, autor, cuando, mensaje: mensaje.join(\"~\") };\n});\nreturn msg;",
+        "outputs": 1,
+        "x": 560,
+        "y": 460,
         "wires": [
             [
-                "dbg_lab_estado"
+                "tpl_dash_commits"
             ]
         ]
     },
     {
-        "id": "chg_lab_normal",
-        "type": "change",
-        "z": "tab_lab_upse",
-        "name": "Normal",
-        "rules": [
-            {
-                "t": "set",
-                "p": "estado",
-                "pt": "msg",
-                "to": "Temperatura normal",
-                "tot": "str"
-            }
-        ],
-        "x": 760,
-        "y": 160,
+        "id": "tpl_dash_commits",
+        "type": "ui_template",
+        "z": "tab_dash_upse",
+        "group": "grp_dash_git",
+        "name": "Tabla de commits",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "format": "<div style=\"font-weight:bold;margin-bottom:6px\">Historial de commits (repositorio UPSE)</div>\n<table style=\"width:100%;border-collapse:collapse;font-size:13px\">\n  <tr style=\"text-align:left;border-bottom:1px solid #999\">\n    <th>Commit</th><th>Mensaje</th><th>Autor</th><th>Cuando</th>\n  </tr>\n  <tr ng-repeat=\"c in msg.payload\" style=\"border-bottom:1px solid #ddd\" ng-style=\"$first && {'background':'rgba(46,160,67,0.15)'}\">\n    <td><code>{{c.hash}}</code></td>\n    <td>{{c.mensaje}}</td>\n    <td>{{c.autor}}</td>\n    <td>{{c.cuando}}</td>\n  </tr>\n</table>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 770,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "exec_dash_status",
+        "type": "exec",
+        "z": "tab_dash_upse",
+        "command": "git -C \"C:/Users/ALEX CORDOVA/.node-red/projects/ProyectosGIT\" status -sb",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "10",
+        "winHide": true,
+        "oldrc": false,
+        "name": "git status",
+        "x": 370,
+        "y": 520,
         "wires": [
             [
-                "dbg_lab_estado"
-            ]
+                "fn_dash_status"
+            ],
+            [],
+            []
         ]
     },
     {
-        "id": "dbg_lab_all",
-        "type": "debug",
-        "z": "tab_lab_upse",
-        "name": "Lectura del sensor",
-        "active": true,
-        "tosidebar": true,
-        "complete": "payload",
-        "targetType": "msg",
+        "id": "fn_dash_status",
+        "type": "function",
+        "z": "tab_dash_upse",
+        "name": "Estado de sincronizacion",
+        "func": "const linea = String(msg.payload).split(/\\r?\\n/)[0] || \"\";\nconst rama = (linea.match(/^## ([^.\\s]+)/) || [])[1] || \"?\";\nconst ahead = +((linea.match(/ahead (\\d+)/) || [])[1] || 0);\nconst behind = +((linea.match(/behind (\\d+)/) || [])[1] || 0);\nconst cambios = String(msg.payload).split(/\\r?\\n/).slice(1).filter(l => l.trim()).length;\n\nlet texto;\nif (ahead > 0) {\n    texto = `<span style=\"color:#ff7f0e\">⬆ ${ahead} commit(s) pendientes de PUSH</span>`;\n} else if (behind > 0) {\n    texto = `<span style=\"color:#1f77b4\">⬇ ${behind} commit(s) pendientes de PULL</span>`;\n} else {\n    texto = `<span style=\"color:#2ca02c\">✔ Sincronizado con GitHub (origin/${rama})</span>`;\n}\nif (cambios > 0) {\n    texto += `<br><small>${cambios} archivo(s) modificados sin commit</small>`;\n}\nmsg.payload = texto;\nreturn msg;",
+        "outputs": 1,
         "x": 580,
-        "y": 220,
-        "wires": []
+        "y": 520,
+        "wires": [
+            [
+                "txt_dash_sync"
+            ]
+        ]
     },
     {
-        "id": "dbg_lab_estado",
-        "type": "debug",
-        "z": "tab_lab_upse",
-        "name": "Estado",
-        "active": true,
-        "tosidebar": true,
-        "complete": "estado",
-        "targetType": "msg",
-        "x": 950,
-        "y": 120,
+        "id": "txt_dash_sync",
+        "type": "ui_text",
+        "z": "tab_dash_upse",
+        "group": "grp_dash_git",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Sincronizacion",
+        "label": "Rama main",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 800,
+        "y": 520,
         "wires": []
     }
 ]
